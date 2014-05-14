@@ -1,0 +1,180 @@
+<!Doctype html>
+<html lang="en">
+<head>
+	<title>ЛПП</title>
+	<meta charset="utf-8">
+	<title><%= title %></title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+    <link href="../public/stylesheets/style.css" rel="stylesheet">
+</head>
+<body>
+	
+<div class="line-ur">
+	<div><input name="f1" id="f1" type="text">x<sub>1</sub> + <input name="f1" id="f2" type="text">x<sub>2</sub> = <input name="z1" id="z1" type="text"></div>
+	<div><input name="f3" id="f3" type="text">x<sub>1</sub> + <input name="f4" id="f4" type="text">x<sub>2</sub> = <input name="z2" id="z2" type="text"></div>
+	<div><input name="f5" id="f5" type="text">x<sub>1</sub> + <input name="f6" id="f6" type="text">x<sub>2</sub> = <input name="z3" id="z3" type="text"></div>
+	<input type="button" id="main-submit" value="ПОСЧИТАТЬ">
+</div>
+<script type="text/javascript">
+    $('#main-submit').click(function(e) {
+    	var f1 = $('#f1').val(),
+       	    f2 = $('#f2').val(),
+       	    f3 = $('#f3').val(),
+       	    f4 = $('#f4').val(),
+       	    f5 = $('#f5').val(),
+       	    f6 = $('#f6').val(),
+       	    z1 = $('#z1').val(),
+       	    z2 = $('#z2').val(),
+       	    z3 = $('#z3').val();
+       	$('#message-tables').show();
+       	var q1 = $('#q1'),
+	       	q2 = $('#q2'),
+	       	q3 = $('#q3'),
+	       	q4 = $('#q4'),
+	       	q5 = $('#q5'),
+	       	q6 = $('#q6');
+
+	    //Вывод значений в таблицу
+     	q1.html(z1 - f2);
+     	q2.html(z1 - f1);
+     	q3.html(z2 - f4);
+     	q4.html(z2 - f3);
+     	q5.html(z3 - f6);
+     	q6.html(z3 - f5);
+     	
+ 		//Высчитывание координат для графика
+		var x1 = parseFloat(f1),
+			x2 = parseFloat(f2),
+			x3 = parseFloat(f3),
+			x4 = parseFloat(f4),
+			x5 = parseFloat(f5),
+			x6 = parseFloat(f6),
+			m1 = parseFloat(z1),
+			m2 = parseFloat(z2),
+			m3 = parseFloat(z3);
+		var v1 = m1 - x2,
+			v2 = m1 - x1,
+			v3 = m2 - x4,
+			v4 = m2 - x3,
+			v5 = m3 - x6,
+			v6 = m3 - x5;
+
+
+     	//График функции
+     	var canvas = document.getElementById('canvas');
+     	var	context = canvas.getContext('2d');
+     	
+     	//Выведем тетрдную сетку
+     	for (var x = 0.5; x < 1000; x +=10) {
+     		context.moveTo(x,0);
+     		context.lineTo(x, 1000);
+     	}
+     	for (var y = 0.5; y < 1000; y += 10) {
+     		context.moveTo(0,y);
+     		context.lineTo (1000, y);
+     	}
+
+     	context.strokeStyle = "#eee";
+     	context.stroke();
+
+     	//Рисуем координатную плоскость
+     	//линия x
+     	context.beginPath();
+     	context.translate(500,0);
+     	context.moveTo(0,0);
+     	context.lineTo(0,1000);
+     	context.lineWidth = 1;
+   	    context.strokeStyle = 'black';
+     	context.stroke();
+     	context.closePath();
+		//линия y
+     	context.beginPath();
+     	context.translate(0,500);
+     	context.moveTo(-500,0);
+     	context.lineTo(500,0);
+     	context.lineWidth = 1;
+   	    context.strokeStyle = 'black';
+     	context.stroke();
+     	context.closePath();
+
+
+
+		//Рисуем линии функций
+		//линия 1 функции
+		context.beginPath();
+		
+     	context.moveTo(0, v2);
+     	context.lineTo(v1, 0);
+     	context.lineWidth = 2;
+     	context.strokeStyle = 'green';
+     	context.stroke();
+     	context.closePath();
+
+     	//линия 2 функции
+		context.beginPath();
+		context.translate(0, 0)
+     	context.moveTo(0, -v4);
+     	context.lineTo(-v3, 0);
+     	context.lineWidth = 2;
+     	context.strokeStyle = 'red';
+     	context.stroke();
+     	context.closePath();
+
+     	//линия 3 функции
+		context.beginPath();
+		context.translate(0, 0)
+     	context.moveTo(0, -v6);
+     	context.lineTo(-v5, 0);
+     	context.lineWidth = 2;
+     	context.strokeStyle = 'blue';
+     	context.stroke();
+     	context.closePath();
+    });
+
+</script>
+<div id="message-tables" style="display:none;">
+	<h1>Координаты для графиков функций</h1>
+	<div class="table-1">
+		<table>
+			<tr>
+				<td>0</td>
+				<td id="q2"></td>
+			</tr>
+			<tr>
+				<td id="q1"></td>
+				<td>0</td>
+			</tr>
+		</table>
+	</div>
+	<div class="table-2">
+		<table>
+			<tr>
+				<td>0</td>
+				<td id="q3"></td>
+			</tr>
+			<tr>
+				<td id="q4"></td>
+				<td>0</td>
+			</tr>
+		</table>
+	</div>
+	<div class="table-3">
+		<table>
+			<tr>
+				<td>0</td>
+				<td id="q5"></td>
+			</tr>
+			<tr>
+				<td id="q6"></td>
+				<td>0</td>
+			</tr>
+		</table>
+	</div>
+</div>
+<div id="grap-canvas">
+	<canvas id="canvas" width="1000" height="1000">
+		//Ваш браузер не поддерживает html5 canvas
+	</canvas>
+</div>
+</body>
+</html>

@@ -1,0 +1,40 @@
+
+a {
+  color: #00B7FF;
+}
+.line-ur input {
+	width:50px;
+	padding-right:5px;
+}
+.line-ur input:focus {
+	box-shadow: 0px 0px 5px blue;
+	-webkit-box-shadow: 0px 0px 5px blue;
+	-moz-box-shadow: 0px 0px 5px blue;
+}
+#main-submit {
+	width:100px;
+	height:30px;
+	background: green;
+	border-radius:0;
+	color:white;
+	border:none;
+	margin:30px 0 0 40px;
+	cursor:pointer;
+}
+#message-tables {
+	margin-top:50px;
+}
+#message-tables table {
+	border: 1px solid #ececec;
+	margin-left:30px;
+}
+#message-tables td {
+	padding:10px;
+	border: 1px solid #ececec;
+}
+#grap-canvas {
+	display:block;
+	border:1px solid black;
+	margin-top:30px;
+	width:1000px;
+}
