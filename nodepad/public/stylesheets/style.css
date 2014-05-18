@@ -2,16 +2,19 @@
 a {
   color: #00B7FF;
 }
-.line-ur input {
+.line-ur input, .function input {
 	width:50px;
 	padding-right:5px;
 }
-.line-ur input:focus {
+.line-ur input:focus, .function input:focus {
 	box-shadow: 0px 0px 5px blue;
 	-webkit-box-shadow: 0px 0px 5px blue;
 	-moz-box-shadow: 0px 0px 5px blue;
 }
-#main-submit {
+.function {
+    margin-top:30px;
+}
+#main-submit, #submit-child {
 	width:100px;
 	height:30px;
 	background: green;
@@ -34,7 +37,17 @@ a {
 }
 #grap-canvas {
 	display:block;
-	border:1px solid black;
 	margin-top:30px;
-	width:1000px;
+	width:500px;
+}
+.box {
+    width:980px;
+    margin:0 auto;
+}
+.table-1, .table-2 {
+    display:inline-block;
+    margin-left:30px;
+}
+.none {
+    display:none;
 }

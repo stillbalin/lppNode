@@ -1,0 +1,250 @@
+<!Doctype html>
+<html lang="en">
+<head>
+	<title>ЛПП</title>
+	<meta charset="utf-8">
+	<title><%= title %></title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+    <link href="../public/stylesheets/style.css" rel="stylesheet">
+</head>
+<body>
+<div class="box">
+    <div class="function">
+        <h2>Введите значения целевой функции:</h2>
+        C=<input id="cf1">x<sub>1</sub> + <input id="cf2">x<sub>2</sub>&nbsp;&rarr;&nbsp;<select id="select"><option value="max">max</option><option value="min">min</option></select>
+    </div>
+    <div class="line-ur">
+        <h2>Введите значения уравнений:</h2>
+        <div><input name="f1" id="f1" type="text">x<sub>1</sub> + <input name="f1" id="f2" type="text">x<sub>2</sub><select id="select1"><option value="<="><=</option><option value=">=">>=</option></select> <input name="z1" id="z1" type="text"></div>
+
+        <div style="margin-top:10px;"><input name="f3" id="f3" type="text">x<sub>1</sub> + <input name="f4" id="f4" type="text">x<sub>2</sub> <select id="select2"><option value=">=">>=</option><option value="<="><=</option></select> <input name="z2" id="z2" type="text"></div>
+        <input type="button" id="main-submit" value="ПОСЧИТАТЬ">
+    </div>
+
+
+    <script type="text/javascript">
+        // все действия при клике на кнопку посчитать
+        $('#main-submit').click(function(e) {
+            //значения больше или меньше или равно
+            var select1 = $('#select1').val(),
+                select2 = $('#select2').val();
+
+            // значения целевой функции
+            var cf1 = $('#cf1').val(),
+                cf2 = $('#cf2').val();
+            $('#cfp1').html(cf1);
+            $('#cfp2').html(cf2);
+            var select = $('#select').val();
+            $('.sell').html(select);
+            //
+            //Значения системы уравнений
+            var f1 = $('#f1').val(),
+                f2 = $('#f2').val(),
+                f3 = $('#f3').val(),
+                f4 = $('#f4').val(),
+                z1 = $('#z1').val(),
+                z2 = $('#z2').val();
+
+            // Вывод конечной системы уравнений
+            $('#g1').html(f1);
+            $('#g2').html(f2);
+            $('#g3').html(f3);
+            $('#g4').html(f4);
+            $('#resultSelect').html(select1);
+            $('#resultView').html(select2);
+            $('#exitResult').html(z1);
+            $('#exitResultes').html(z2);
+            // Вводить только числа в инпуты
+            var symb1 =  $('#f1'),
+                symb2 = $('#f2'),
+                symb3 = $('#f3'),
+                symb4 = $('#f4'),
+                symb5 = $('#z1'),
+                symb6 = $('#z2');
+            var symb = symb1 || symb2 || symb3 || symb4 || symb5 || symb6;
+            symb.bind('change keyup input click', function() {
+               if (this.value.match(/[^0-9]/g)) {
+                   this.value = this.value.replace(/[^0-9]/g, '');
+               }
+            });
+            //Проверка на вводимость инпутов
+            var inputValue = f1 || f2 || f3 || f4 || z1 || z2 || cf1 || cf2;
+            if (inputValue) {
+                $('#message-tables').show(); // показываем блок с расчетами
+                $('.none').show();  //Показываем внутренний блок
+            }
+            else {
+                alert('Вы заполнили не все поля');
+            }
+            var q1 = $('#q1'),
+                q2 = $('.q2'),
+                q3 = $('.q3'),
+                q4 = $('#q4'),
+                q5 = $('#q5'),
+                q6 = $('#q6');
+
+            //Вывод значений в таблицу
+            q1.html(z1 - f2);
+            q2.html(z1 - f1);
+            q3.html(z2 - f4);
+            q4.html(z2 - f3);
+
+            // Вывод значений угловых точек
+            $('.ccf1').html(cf1);
+            $('.ccf2').html(cf2);
+            var result1 = cf2*q3,
+                result3 = cf1 * q2;
+            $('.result-1').html(result1);
+            $('.result-3').html(result3);
+            var o1 =  parseFloat(result1),
+                o2 =  parseFloat(result2),
+                o3 =  parseFloat(result3);
+            //Высчитывание координат для графика
+            var x1 = parseFloat(f1),
+                x2 = parseFloat(f2),
+                x3 = parseFloat(f3),
+                x4 = parseFloat(f4),
+                m1 = parseFloat(z1),
+                m2 = parseFloat(z2);
+            var v1 = m1 - x2,
+                v2 = m1 - x1,
+                v3 = m2 - x4,
+                v4 = m2 - x3;
+            $('#submit-child').click(function() {
+                //точка пересечения линий
+                var t1 = $('#t1').val(),
+                    t2 = $('#t2').val();
+                $('.tt1').html(t1);
+                $('.tt2').html(t2);
+                var result2 = (cf1 * 0) + (cf2 * t1);
+                $('.result-2').html(result2);
+            });
+
+            // Максимальное число из массива
+            Array.max = function( array ){
+                return Math.max.apply( Math, array );
+            };
+
+            Array.min = function( array ){
+                return Math.min.apply( Math, array );
+            };
+            //График функции
+            var canvas = document.getElementById('canvas');
+            var	context = canvas.getContext('2d');
+
+            //Выведем тетрадную сетку
+            for (var x = 0.5; x < 500; x +=10) {
+                context.moveTo(x,0);
+                context.lineTo(x, 500);
+            }
+            for (var y = 0.5; y < 500; y += 10) {
+                context.moveTo(0,y);
+                context.lineTo (500, y);
+            }
+
+            context.strokeStyle = "#eee";
+            context.stroke();
+
+            //Рисуем координатную плоскость
+            //линия x
+            context.beginPath();
+            context.translate(250,0);
+            context.moveTo(0,0);
+            context.lineTo(0,500);
+            context.lineWidth = 1;
+            context.strokeStyle = 'black';
+            context.stroke();
+            context.closePath();
+            //линия y
+            context.beginPath();
+            context.translate(0,250);
+            context.moveTo(-250,0);
+            context.lineTo(250,0);
+            context.lineWidth = 1;
+            context.strokeStyle = 'black';
+            context.stroke();
+            context.closePath();
+
+
+
+            //Рисуем линии функций
+            //линия 1 функции
+            context.beginPath();
+
+            context.moveTo(0, v2);
+            context.lineTo(v1, 0);
+            context.lineWidth = 2;
+            context.strokeStyle = 'green';
+            context.stroke();
+            context.closePath();
+
+            //линия 2 функции
+            context.beginPath();
+            context.translate(0, 0);
+            context.moveTo(0, -v4);
+            context.lineTo(-v3, 0);
+            context.lineWidth = 2;
+            context.strokeStyle = 'red';
+            context.stroke();
+            context.closePath();
+        });
+
+    </script>
+    <div id="message-tables" style="display:none;">
+        <div id="prev-mess">
+            <h2>Целевая функция:</h2>
+            C = <span id="cfp1"></span>x<sub>1</sub> + <span id="cfp2"></span>x<sub>2</sub>&nbsp;&rarr;&nbsp;<span class="sell"></span>
+            <h2>Система уравнений:</h2>
+            <div><span id="g1"></span> x<sub>1</sub> + <span id="g2"></span>x<sub>2</sub> <span id="resultSelect"></span> <span id="exitResult"></span></div>
+            <div><span id="g3"></span> x<sub>1</sub> + <span id="g4"></span>x<sub>2</sub> <span id="resultView"></span> <span id="exitResultes"></span></div>
+        </div>
+        <h1>Координаты для графиков функций</h1>
+        <div class="table-1">
+            <table>
+                <tr>
+                    <td>x</td>
+                    <td>0</td>
+                    <td class="q2"></td>
+                </tr>
+                <tr>
+                    <td>y</td>
+                    <td id="q1"></td>
+                    <td>0</td>
+                </tr>
+            </table>
+        </div>
+        <div class="table-2">
+            <table>
+                <tr>
+                    <td>x</td>
+                    <td>0</td>
+                    <td class="q3"></td>
+                </tr>
+                <tr>
+                    <td>y</td>
+                    <td id="q4"></td>
+                    <td>0</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div id="grap-canvas">
+        <canvas id="canvas" width="1000" height="500">
+            //Ваш браузер не поддерживает html5 canvas
+        </canvas>
+    </div>
+    <div class="function none">
+        <h2>Введите координаты пересечения двух линий:</h2>
+        x<sub>1</sub> = <input id="t1">  x<sub>2</sub> = <input id="t2"> <input type="button" id="submit-child" value="ОТПРАВИТЬ">
+        <div class="result-cords">
+            <h2>Точка пересечения линий</h2>  С(<span class="tt1" ></span>,<span class="tt2" ></span> );
+            <h2>Значения целевой функции в каждой угловой точке и максимальное значение</h2>
+            <div>O -> F(0,0) = <span class="ccf1"></span> * 0 + <span class="ccf2"></span> * 0 = 0</div>
+            <div>A -> F(0, <span class="q3"></span> ) = <span class="ccf1"></span> * 0 + <span class="ccf2"></span> * <span class="q3"></span> = <span class="result-1"></span></div>
+            <div>C -> F(<span class="tt1" ></span>,<span class="tt2" ></span>) = <span class="ccf1"></span> * <span class="tt1" ></span> + <span class="ccf2"></span> * <span class="tt2" ></span> = <span class="result-2"></span></div>
+            <div>D -> F(<span class="q8"></span>,0) = <span class="ccf1"></span> * <span class="q2"></span> + <span class="ccf2"></span> * 0 = <span class="result-3"></span></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
